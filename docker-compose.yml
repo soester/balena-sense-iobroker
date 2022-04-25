@@ -1,9 +1,10 @@
-version: '2'
+version: "2"
+
 volumes:
     sense-data:
     dashboard-data:
     iobrokerdata:
-    
+
 services:
   influxdb:
     restart: always
@@ -14,9 +15,9 @@ services:
     image: balenablocks/dashboard
     restart: always
     volumes:
-        - 'dashboard-data:/data'
+      - 'dashboard-data:/data'
     ports:
-        - '80'
+      - '80'
   sensor:
     build: .
     privileged: true
@@ -41,19 +42,18 @@ services:
     image: eclipse-mosquitto:1.6.15
     ports:
       - "1883:1883"
-    restart: always  
+    restart: always
   iobroker:
     container_name: iobroker
-    image: buanet/iobroker
+    image: buanet/iobroker:v6.1.0-arm64v8
     hostname: iobroker
     restart: always
     ports:
       - "8081:8081"
     volumes:
-      - iobrokerdata:/opt/iobroker
+      - 'iobrokerdata:/opt/iobroker'
     environment:
       - LANG=en_US.UTF-8
       - LANGUAGE=en_US:en
       - LC_ALL=en_US.UTF-8
-      - USBDEVICES="/dev/ttyACM0"
     network_mode: host
